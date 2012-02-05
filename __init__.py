@@ -30,7 +30,7 @@ class Indenter:
 
 def indent(objects, indentLevel, flattened):
     if objects == []:
-        return None
+        return []
     
     indenter = objects[0]
     indenter.indentLevel = indentLevel
@@ -39,8 +39,7 @@ def indent(objects, indentLevel, flattened):
     
     flattened.append({indenter.layout.myid : indentLevel})
     
-    indent(objects[1:], indenter.indentLevel , flattened)
-    indent(indenter.layout.children, indenter.indentLevel + 1, flattened)
+    return [{indenter.layout.myid : indentLevel}] + indent(objects[1:], indenter.indentLevel , flattened) + indent(indenter.layout.children, indenter.indentLevel + 1, flattened)
     
 
 #                   X                ,          A             ,          Achild                  B              ,          Achilchild    ,          Bchild
@@ -53,7 +52,7 @@ objectList[0].layout.children[0].layout.children.append(Indenter(Layout(2,1,[Ind
 objectList[0].layout.children[1].layout.children.append(Indenter(Layout(5,3),0))
 
 flattened = []
-print indent(objectList, 0, flattened)
+print "returned : " + `indent(objectList, 0, flattened)`
 
-print flattened
-print objectList
+print "flattened: " + `flattened`
+#print objectList
